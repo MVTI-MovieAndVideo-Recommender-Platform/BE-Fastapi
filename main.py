@@ -1,45 +1,13 @@
-from typing import List, Optional, Union
-from contextlib import asynccontextmanager
+# 라이브러리 
+from typing import List
 
-from fastapi import FastAPI
+from fastapi import FastAPI,Depends ,Query
 from fastapi.middleware.cors import CORSMiddleware
-from motor.motor_asyncio import AsyncIOMotorClient
-from bson.json_util import dumps
+from pydantic import ValidationError
 
-from pydantic import BaseModel
-
-class content_series(BaseModel):
-    index:int
-    name: str
-    star_avg: float
-    img_url:str 
-    flatrate: str 
-    overview: str 
-    country: str 
-    age_rating: str
-    year: int 
-    genres: str  
-
-# 연결 변수 
-database_name = "content"
-collection_name_series = "series"
-MONGO_URI = "mongodb://localhost:27017"
-
-# MongoDB 연결 설정
-client = AsyncIOMotorClient(MONGO_URI)
-db = client.get_database(database_name)
-collection_seriese = db.get_collection(collection_name_series)
-
-@asynccontextmanager
-async def app_lifespan(app: FastAPI):
-    try:
-        # MongoDB 연결을 시작할 때 실행될 작업들
-        await client.server_info()  # MongoDB에 연결되었는지 확인하는 간단한 명령
-        print("Connected to MongoDB")
-    except Exception as e:
-        print(f"Error connecting to MongoDB: {e}")
-    yield
-    client.close()
+#변수, 함수
+from models.models import Content
+from api.search_api import fetch_contents, db_query, get_database, isValid
 
 app = FastAPI()
 
@@ -55,22 +23,23 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
+@app.get("/series/")
 
-@app.get("/search/{hi}")
-async def read_root(hi):
-    return hi
+# FastAPI 엔드포인트
+@app.get("/search/", response_model=List[Content])
+async def read_contents(database = Depends(get_database), search:str = Query(None), conditions:List[str] = Query(None),condition_fields: List[str] = Query(None)):
+    contents = await fetch_contents(database, search, conditions, condition_fields)
+    return contents
 
 
 # 상세 페이지 정보 넘기기, index를 통해 접속 
-@app.get("/detail/{index}")
-async def detail_info(index):
-    item = await collection_seriese.find_one({"index":int(index)})
-    # ObjectId 필드를 직렬화하여 JSON으로 변환
-    item["_id"] = str(item["_id"])
-    return item
+@app.get("/index/{index}", response_model=Content)
+async def content_info(index,database = Depends(get_database)):
+    content = await db_query(database, {"index":int(index)},1)
+    return content[0]
 
+# 서버 실행 코드 
 if __name__ == "__main__":
     import uvicorn
     uvicorn.run(app, host="0.0.0.0", port=8000)
-
 
