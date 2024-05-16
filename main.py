@@ -23,8 +23,6 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
-@app.get("/series/")
-
 # FastAPI 엔드포인트
 @app.get("/search/", response_model=List[Content])
 async def read_contents(database = Depends(get_database), search:str = Query(None), conditions:List[str] = Query(None),condition_fields: List[str] = Query(None)):
