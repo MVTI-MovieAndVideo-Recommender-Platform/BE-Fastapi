@@ -1,0 +1,9 @@
+aiomysql==0.2.0
+fastapi==0.99.0
+mysqlclient==2.2.4
+pydantic==1.10.15
+PyMySQL==1.1.0
+python-dotenv==1.0.1
+SQLAlchemy==2.0.26
+typing==3.7.4.3
+uvicorn==0.29.0
