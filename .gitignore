@@ -1,2 +1,2 @@
-reviewsAPI/myvenv
-reviewsAPI/.env
+reviewsAPI/myvenv/
+reviewsAPI/*.env
