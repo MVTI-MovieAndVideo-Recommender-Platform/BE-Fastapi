@@ -1,8 +1,7 @@
 from fastapi import HTTPException, Depends
 from sqlalchemy import select
-from model.models import ReviewORM,CreatedReview, UpdatedReview,DeletedRivew
+from model.models import ReviewORM,CreatedReview, UpdatedReview,DeletedReview
 from sqlalchemy.ext.asyncio import AsyncSession
-from db_connection.database import AsyncSessionLocal
 from db_connection.database import get_db
 
 async def create_review(cr:CreatedReview, db: AsyncSession = Depends(get_db)):
@@ -21,7 +20,7 @@ async def update_review(ur:UpdatedReview, db: AsyncSession = Depends(get_db)):
   await db.commit()
   return new_review
 
-async def delete_review(dr:DeletedRivew, db: AsyncSession = Depends(get_db)):
+async def delete_review(dr:DeletedReview, db: AsyncSession = Depends(get_db)):
   # users 테이블에서 모든 행 선택
   result = await db.execute(select(ReviewORM).where(ReviewORM.review_index == dr.review_index))
   new_review = result.scalar_one_or_none()

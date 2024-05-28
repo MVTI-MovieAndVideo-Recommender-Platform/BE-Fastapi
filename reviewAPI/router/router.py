@@ -1,6 +1,6 @@
 # app/routers/review.py
 from fastapi import APIRouter, Depends
-from model.models import CreatedReview, UpdatedReview, DeletedRivew
+from model.models import CreatedReview, UpdatedReview, DeletedReview
 from sqlalchemy.ext.asyncio import AsyncSession
 
 from db_connection.database import get_db
@@ -16,6 +16,6 @@ async def review_create_endpoint(cr: CreatedReview, db: AsyncSession = Depends(g
 async def update_review_endpoint(ur: UpdatedReview, db: AsyncSession = Depends(get_db)):
     return await update_review(ur,db)
 
-@router.delete("/review_delete", response_model= DeletedRivew)
-async def delete_review_endpoint(dr:DeletedRivew, db: AsyncSession = Depends(get_db)):
+@router.delete("/review_delete", response_model= DeletedReview)
+async def delete_review_endpoint(dr:DeletedReview, db: AsyncSession = Depends(get_db)):
     return await delete_review(dr, db)

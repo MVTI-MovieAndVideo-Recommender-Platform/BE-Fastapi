@@ -28,7 +28,7 @@ class UpdatedReview(BaseModel):
     class Config:
         orm_mode = True
 
-class DeletedRivew(BaseModel):
+class DeletedReview(BaseModel):
     review_index: int
     
     class Config:
