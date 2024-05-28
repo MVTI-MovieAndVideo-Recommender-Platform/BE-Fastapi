@@ -3,7 +3,7 @@ from fastapi import APIRouter, Depends
 from model.models import CreatedReview, UpdatedReview, DeletedReview
 from sqlalchemy.ext.asyncio import AsyncSession
 
-from db_connection.database import get_db
+from database.database import get_db
 from utils.CUD import create_review, update_review, delete_review
 
 router = APIRouter()

@@ -23,7 +23,7 @@ class CreatedReview(BaseModel):
 
 class UpdatedReview(BaseModel):
     review_index: int
-    review: bool
+    review: int
 
     class Config:
         orm_mode = True
