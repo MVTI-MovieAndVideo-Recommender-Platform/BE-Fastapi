@@ -1,21 +1,30 @@
 # app/routers/review.py
 from fastapi import APIRouter, Depends
-from model.models import CreatedReview, UpdatedReview, DeletedReview
+from model.models import CreatedStar, CreatedLike, UpdatedStar, DeletedLike, DeletedStar
 from sqlalchemy.ext.asyncio import AsyncSession
 
 from database.database import get_db
-from utils.CUD import create_review, update_review, delete_review
+from utils.CUD import create_star, update_star, delete_star, create_like, delete_like
 
 router = APIRouter()
 
-@router.post("/review_create", response_model=CreatedReview)
-async def review_create_endpoint(cr: CreatedReview, db: AsyncSession = Depends(get_db)):
-    return await create_review(cr,db)
+@router.post("/star_create", response_model=CreatedStar)
+async def create_star_endpoint(cs: CreatedStar, db: AsyncSession = Depends(get_db)):
+    return await create_star(cs,db)
 
-@router.put("/review_update", response_model=UpdatedReview)
-async def update_review_endpoint(ur: UpdatedReview, db: AsyncSession = Depends(get_db)):
-    return await update_review(ur,db)
+@router.put("/star_update", response_model=UpdatedStar)
+async def update_star_endpoint(us: UpdatedStar, db: AsyncSession = Depends(get_db)):
+    return await update_star(us,db)
 
-@router.delete("/review_delete", response_model= DeletedReview)
-async def delete_review_endpoint(dr:DeletedReview, db: AsyncSession = Depends(get_db)):
-    return await delete_review(dr, db)
+@router.delete("/star_delete", response_model= DeletedStar)
+async def delete_star_endpoint(ds:DeletedStar, db: AsyncSession = Depends(get_db)):
+    return await delete_star(ds, db)
+
+@router.post("/like_create", response_model=CreatedLike)
+async def create_like_endpoint(cl:CreatedLike , db: AsyncSession = Depends(get_db)):
+    return await create_like(cl,db)
+
+@router.delete("/like_delete", response_model= DeletedLike)
+async def delete_like_endpoint(dl: DeletedLike, db: AsyncSession = Depends(get_db)):
+    return await delete_like(dl, db)
+
