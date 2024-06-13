@@ -5,12 +5,11 @@ import pandas as pd
 import numpy as np
 import tensorflow as tf
 import tensorflow_hub as hub
-from sklearn.preprocessing import StandardScaler
 from concurrent.futures import ThreadPoolExecutor
 from tensorflow import keras
 import pickle
 from typing import List
-from model.data.model import content
+from model.model import content
 
 
 # 임베딩을 생성하는 함수
@@ -35,13 +34,13 @@ async def content_embedding(contents: List[content]):
     pickle.dump(contents_embeddings_dict, f)
   
 
-def init_embedding():
-  global labse_model
-  global contents 
-  model_path = 'resource/labse_model.h5'
-  labse_model = keras.models.load_model(model_path, custom_objects={'KerasLayer': hub.KerasLayer})
-  contents = pd.read_csv('resource\contents_meta_data_final.csv', encoding='utf-8')
+# def init_embedding():
+#   global labse_model
+#   global contents 
+#   model_path = 'resource/labse_model.h5'
+#   labse_model = keras.models.load_model(model_path, custom_objects={'KerasLayer': hub.KerasLayer})
+#   contents = pd.read_csv('resource\contents_meta_data_final.csv', encoding='utf-8')
     
-def data_load(file_path):
-  with open(file_path, 'rb') as f:
-      return pickle.load(f)
+# def data_load(file_path):
+#   with open(file_path, 'rb') as f:
+#       return pickle.load(f)

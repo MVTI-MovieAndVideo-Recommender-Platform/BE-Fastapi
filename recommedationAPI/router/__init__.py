@@ -1,5 +1,5 @@
-from utils.recommender import init_recommneder
-from utils.embedding import init_embedding
+from utils.recommender import init_recommender
+# from utils.embedding import init_embedding
 
-init_recommneder()
-init_embedding()
+init_recommender()
+# init_embedding()
